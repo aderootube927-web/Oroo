@@ -1,34 +1,1434 @@
-# Gradle files
-.gradle/
-build/
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vorenth Intelligence Platform</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            vorenth: {
+              dark: '#0a0f1a',
+              darker: '#060a12',
+              card: '#111827',
+              border: '#1f2937',
+              accent: '#06b6d4',
+              accentHover: '#0891b2',
+              success: '#10b981',
+              warning: '#f59e0b',
+              danger: '#ef4444',
+              muted: '#6b7280',
+              text: '#e5e7eb'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { font-family: 'Space Grotesk', sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
 
-# Local configuration file (sdk path, etc)
-local.properties
+    .gradient-mesh {
+      background: 
+        radial-gradient(ellipse at 20% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 70%),
+        linear-gradient(180deg, #0a0f1a 0%, #060a12 100%);
+    }
 
-# Log/OS Files
-*.log
+    .glass-card {
+      background: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(31, 41, 55, 0.8);
+    }
 
-# Android Studio generated files and folders
-captures/
-.externalNativeBuild/
-.cxx/
-*.aab
-*.apk
-output-metadata.json
+    .glow-accent {
+      box-shadow: 0 0 40px rgba(6, 182, 212, 0.15);
+    }
 
-# IntelliJ
-*.iml
-.idea/
-misc.xml
-deploymentTargetDropDown.xml
-render.experimental.xml
+    .pulse-dot {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
 
-# Keystore files
-*.jks
-*.keystore
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
 
-# Google Services (e.g. APIs or Firebase)
-google-services.json
+    .slide-in {
+      animation: slideIn 0.3s ease-out;
+    }
 
-# Android Profiling
-*.hprof
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .typing-indicator span {
+      animation: blink 1.4s infinite both;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+
+    .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+    .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+    .scrollbar-thin::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+
+    .stat-card:hover { transform: translateY(-2px); }
+    .insight-card:hover { border-color: rgba(6, 182, 212, 0.5); }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #06b6d4;
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full gradient-mesh text-vorenth-text overflow-auto">
+  <div id="app" class="h-full w-full"><!-- Auth Screen -->
+   <div id="auth-screen" class="h-full w-full flex items-center justify-center p-4">
+    <div class="w-full max-w-md"><!-- Logo -->
+     <div class="text-center mb-8 fade-in">
+      <div class="inline-flex items-center gap-3 mb-4">
+       <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center glow-accent">
+        <svg class="w-7 h-7 text-white" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z" /> <path d="M2 17l10 5 10-5" /> <path d="M2 12l10 5 10-5" />
+        </svg>
+       </div>
+       <h1 id="auth-logo-text" class="text-3xl font-bold text-white">Vorenth</h1>
+      </div>
+      <p id="auth-tagline" class="text-vorenth-muted">AI-Powered Global Intelligence Platform</p>
+     </div><!-- Auth Card -->
+     <div class="glass-card rounded-2xl p-8 glow-accent">
+      <div id="auth-tabs" class="flex gap-2 mb-6 p-1 bg-vorenth-darker rounded-lg"><button onclick="showAuthTab('login')" id="login-tab" class="flex-1 py-2.5 px-4 rounded-md text-sm font-medium transition-all bg-vorenth-accent text-white">Sign In</button> <button onclick="showAuthTab('register')" id="register-tab" class="flex-1 py-2.5 px-4 rounded-md text-sm font-medium transition-all text-vorenth-muted hover:text-white">Register</button>
+      </div><!-- Login Form -->
+      <form id="login-form" class="space-y-4" onsubmit="handleLogin(event)">
+       <div><label class="block text-sm font-medium text-vorenth-muted mb-2">Email</label> <input type="email" id="login-email" placeholder="you@company.com" required class="w-full px-4 py-3 bg-vorenth-darker border border-vorenth-border rounded-lg text-white placeholder-vorenth-muted transition-all">
+       </div>
+       <div><label class="block text-sm font-medium text-vorenth-muted mb-2">Password</label> <input type="password" id="login-password" placeholder="••••••••" required class="w-full px-4 py-3 bg-vorenth-darker border border-vorenth-border rounded-lg text-white placeholder-vorenth-muted transition-all">
+       </div><button type="submit" id="login-btn" class="w-full py-3 px-4 bg-vorenth-accent hover:bg-vorenth-accentHover text-white font-medium rounded-lg transition-all flex items-center justify-center gap-2"> <span>Sign In</span> <i data-lucide="arrow-right" class="w-4 h-4"></i> </button>
+      </form><!-- Register Form -->
+      <form id="register-form" class="space-y-4 hidden" onsubmit="handleRegister(event)">
+       <div><label class="block text-sm font-medium text-vorenth-muted mb-2">Full Name</label> <input type="text" id="register-name" placeholder="John Doe" required class="w-full px-4 py-3 bg-vorenth-darker border border-vorenth-border rounded-lg text-white placeholder-vorenth-muted transition-all">
+       </div>
+       <div><label class="block text-sm font-medium text-vorenth-muted mb-2">Email</label> <input type="email" id="register-email" placeholder="you@company.com" required class="w-full px-4 py-3 bg-vorenth-darker border border-vorenth-border rounded-lg text-white placeholder-vorenth-muted transition-all">
+       </div>
+       <div><label class="block text-sm font-medium text-vorenth-muted mb-2">Password</label> <input type="password" id="register-password" placeholder="••••••••" required minlength="8" class="w-full px-4 py-3 bg-vorenth-darker border border-vorenth-border rounded-lg text-white placeholder-vorenth-muted transition-all">
+       </div><button type="submit" id="register-btn" class="w-full py-3 px-4 bg-vorenth-accent hover:bg-vorenth-accentHover text-white font-medium rounded-lg transition-all flex items-center justify-center gap-2"> <span>Create Account</span> <i data-lucide="user-plus" class="w-4 h-4"></i> </button>
+      </form>
+      <div id="auth-message" class="mt-4 text-center text-sm hidden"></div><!-- Subscription Plans -->
+      <div class="mt-6 pt-6 border-t border-vorenth-border">
+       <p class="text-center text-sm text-vorenth-muted mb-4">Choose your plan</p>
+       <div class="grid grid-cols-2 gap-3"><button onclick="selectPlan('starter')" id="plan-starter" class="p-3 rounded-lg border-2 border-vorenth-accent bg-vorenth-accent/10 transition-all">
+         <div class="text-sm font-semibold text-white">
+          Starter
+         </div>
+         <div class="text-xs text-vorenth-muted">
+          $29/month
+         </div></button> <button onclick="selectPlan('pro')" id="plan-pro" class="p-3 rounded-lg border-2 border-vorenth-border hover:border-vorenth-accent/50 transition-all">
+         <div class="text-sm font-semibold text-white">
+          Pro
+         </div>
+         <div class="text-xs text-vorenth-muted">
+          $99/month
+         </div></button>
+       </div>
+      </div>
+     </div>
+     <p class="text-center text-xs text-vorenth-muted mt-6">By signing up, you agree to our Terms of Service and Privacy Policy</p>
+    </div>
+   </div><!-- Main Dashboard -->
+   <div id="dashboard-screen" class="h-full w-full hidden"><!-- Sidebar -->
+    <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-vorenth-darker border-r border-vorenth-border z-40 transform transition-transform lg:translate-x-0 -translate-x-full">
+     <div class="h-full flex flex-col"><!-- Logo -->
+      <div class="p-5 border-b border-vorenth-border">
+       <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+         <svg class="w-6 h-6 text-white" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z" /> <path d="M2 17l10 5 10-5" /> <path d="M2 12l10 5 10-5" />
+         </svg>
+        </div><span id="sidebar-logo" class="text-xl font-bold text-white">Vorenth</span>
+       </div>
+      </div><!-- Navigation -->
+      <nav class="flex-1 p-4 space-y-1 overflow-y-auto scrollbar-thin"><button onclick="navigateTo('overview')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all bg-vorenth-accent/10 text-vorenth-accent" data-nav="overview"> <i data-lucide="layout-dashboard" class="w-5 h-5"></i> <span class="font-medium">Overview</span> </button> <button onclick="navigateTo('insights')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all text-vorenth-muted hover:text-white hover:bg-vorenth-card" data-nav="insights"> <i data-lucide="brain" class="w-5 h-5"></i> <span class="font-medium">AI Insights</span> </button> <button onclick="navigateTo('narratives')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all text-vorenth-muted hover:text-white hover:bg-vorenth-card" data-nav="narratives"> <i data-lucide="trending-up" class="w-5 h-5"></i> <span class="font-medium">Narratives</span> </button> <button onclick="navigateTo('markets')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all text-vorenth-muted hover:text-white hover:bg-vorenth-card" data-nav="markets"> <i data-lucide="bar-chart-3" class="w-5 h-5"></i> <span class="font-medium">Markets</span> </button> <button onclick="navigateTo('search')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all text-vorenth-muted hover:text-white hover:bg-vorenth-card" data-nav="search"> <i data-lucide="search" class="w-5 h-5"></i> <span class="font-medium">Deep Search</span> </button> <button onclick="navigateTo('saved')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all text-vorenth-muted hover:text-white hover:bg-vorenth-card" data-nav="saved"> <i data-lucide="bookmark" class="w-5 h-5"></i> <span class="font-medium">Saved</span> </button>
+       <div class="pt-4 mt-4 border-t border-vorenth-border">
+        <p class="px-4 text-xs font-semibold text-vorenth-muted uppercase tracking-wider mb-2">Settings</p><button onclick="navigateTo('account')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all text-vorenth-muted hover:text-white hover:bg-vorenth-card" data-nav="account"> <i data-lucide="user" class="w-5 h-5"></i> <span class="font-medium">Account</span> </button> <button onclick="navigateTo('billing')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all text-vorenth-muted hover:text-white hover:bg-vorenth-card" data-nav="billing"> <i data-lucide="credit-card" class="w-5 h-5"></i> <span class="font-medium">Billing</span> </button>
+       </div>
+      </nav><!-- User Info -->
+      <div class="p-4 border-t border-vorenth-border">
+       <div class="flex items-center gap-3">
+        <div id="user-avatar" class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center text-white font-semibold">
+         JD
+        </div>
+        <div class="flex-1 min-w-0">
+         <p id="user-name" class="text-sm font-medium text-white truncate">John Doe</p>
+         <p id="user-plan" class="text-xs text-vorenth-muted">Starter Plan</p>
+        </div><button onclick="handleLogout()" class="p-2 text-vorenth-muted hover:text-white transition-colors"> <i data-lucide="log-out" class="w-5 h-5"></i> </button>
+       </div>
+      </div>
+     </div>
+    </aside><!-- Sidebar Overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 lg:hidden hidden" onclick="toggleSidebar()"></div><!-- Main Content -->
+    <main class="lg:ml-64 h-full overflow-auto"><!-- Top Bar -->
+     <header class="sticky top-0 z-20 bg-vorenth-dark/80 backdrop-blur-xl border-b border-vorenth-border">
+      <div class="flex items-center justify-between px-4 lg:px-6 py-4">
+       <div class="flex items-center gap-4"><button onclick="toggleSidebar()" class="lg:hidden p-2 text-vorenth-muted hover:text-white"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
+        <div>
+         <h1 id="page-title" class="text-xl font-bold text-white">Overview</h1>
+         <p id="page-subtitle" class="text-sm text-vorenth-muted">Real-time global intelligence</p>
+        </div>
+       </div>
+       <div class="flex items-center gap-3"><!-- Global Search -->
+        <div class="hidden md:block relative"><input type="text" id="global-search" placeholder="Search topics, regions..." class="w-64 pl-10 pr-4 py-2 bg-vorenth-card border border-vorenth-border rounded-lg text-sm text-white placeholder-vorenth-muted transition-all focus:w-80" onkeypress="handleGlobalSearch(event)"> <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-vorenth-muted"></i>
+        </div><!-- Notifications --> <button class="relative p-2 text-vorenth-muted hover:text-white transition-colors"> <i data-lucide="bell" class="w-5 h-5"></i> <span class="absolute top-1 right-1 w-2 h-2 bg-vorenth-accent rounded-full pulse-dot"></span> </button> <!-- Refresh --> <button onclick="refreshData()" id="refresh-btn" class="p-2 text-vorenth-muted hover:text-white transition-colors"> <i data-lucide="refresh-cw" class="w-5 h-5"></i> </button>
+       </div>
+      </div>
+     </header><!-- Page Content -->
+     <div id="page-content" class="p-4 lg:p-6"><!-- Overview Page -->
+      <div id="page-overview" class="page-section space-y-6"><!-- Welcome Banner -->
+       <div class="glass-card rounded-2xl p-6 glow-accent">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+         <div>
+          <h2 id="welcome-text" class="text-2xl font-bold text-white mb-2">Welcome back to Vorenth</h2>
+          <p class="text-vorenth-muted">Your global intelligence briefing is ready. Here's what's happening around the world.</p>
+         </div>
+         <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 bg-vorenth-success rounded-full pulse-dot"></span> <span class="text-vorenth-muted">Live data feed active</span>
+         </div>
+        </div>
+       </div><!-- Stats Grid -->
+       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="stat-card glass-card rounded-xl p-5 transition-all cursor-pointer" onclick="navigateTo('narratives')">
+         <div class="flex items-center justify-between mb-3">
+          <div class="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center"><i data-lucide="trending-up" class="w-5 h-5 text-cyan-400"></i>
+          </div><span class="text-xs text-vorenth-success font-medium">+12%</span>
+         </div>
+         <p id="stat-narratives" class="text-2xl font-bold text-white">47</p>
+         <p class="text-sm text-vorenth-muted">Active Narratives</p>
+        </div>
+        <div class="stat-card glass-card rounded-xl p-5 transition-all cursor-pointer" onclick="navigateTo('insights')">
+         <div class="flex items-center justify-between mb-3">
+          <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center"><i data-lucide="brain" class="w-5 h-5 text-purple-400"></i>
+          </div><span class="text-xs text-vorenth-success font-medium">+8%</span>
+         </div>
+         <p id="stat-insights" class="text-2xl font-bold text-white">156</p>
+         <p class="text-sm text-vorenth-muted">AI Insights Today</p>
+        </div>
+        <div class="stat-card glass-card rounded-xl p-5 transition-all cursor-pointer" onclick="navigateTo('markets')">
+         <div class="flex items-center justify-between mb-3">
+          <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center"><i data-lucide="globe" class="w-5 h-5 text-green-400"></i>
+          </div><span class="text-xs text-vorenth-warning font-medium">±3%</span>
+         </div>
+         <p id="stat-regions" class="text-2xl font-bold text-white">28</p>
+         <p class="text-sm text-vorenth-muted">Regions Tracked</p>
+        </div>
+        <div class="stat-card glass-card rounded-xl p-5 transition-all cursor-pointer" onclick="navigateTo('saved')">
+         <div class="flex items-center justify-between mb-3">
+          <div class="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center"><i data-lucide="bookmark" class="w-5 h-5 text-amber-400"></i>
+          </div>
+         </div>
+         <p id="stat-saved" class="text-2xl font-bold text-white">0</p>
+         <p class="text-sm text-vorenth-muted">Saved Items</p>
+        </div>
+       </div><!-- Main Grid -->
+       <div class="grid lg:grid-cols-3 gap-6"><!-- Trending Narratives -->
+        <div class="lg:col-span-2 glass-card rounded-2xl p-6">
+         <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-white">Trending Narratives</h3><button onclick="navigateTo('narratives')" class="text-sm text-vorenth-accent hover:underline">View all</button>
+         </div>
+         <div id="trending-narratives" class="space-y-4"><!-- Will be populated dynamically -->
+         </div>
+        </div><!-- AI Intelligence Brief -->
+        <div class="glass-card rounded-2xl p-6">
+         <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center"><i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+           <h3 class="text-lg font-semibold text-white">AI Brief</h3>
+           <p class="text-xs text-vorenth-muted">Updated 5 min ago</p>
+          </div>
+         </div>
+         <div id="ai-brief" class="space-y-4 text-sm text-vorenth-text leading-relaxed">
+          <p>Loading intelligence brief...</p>
+         </div>
+        </div>
+       </div><!-- Recent Insights -->
+       <div class="glass-card rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-6">
+         <h3 class="text-lg font-semibold text-white">Recent Intelligence</h3><button onclick="navigateTo('insights')" class="text-sm text-vorenth-accent hover:underline">View all</button>
+        </div>
+        <div id="recent-insights" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"><!-- Will be populated dynamically -->
+        </div>
+       </div>
+      </div><!-- AI Insights Page -->
+      <div id="page-insights" class="page-section hidden space-y-6">
+       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+         <h2 class="text-xl font-bold text-white">AI-Generated Insights</h2>
+         <p class="text-sm text-vorenth-muted">Automated analysis of global events and trends</p>
+        </div>
+        <div class="flex items-center gap-3"><select id="insight-filter" class="px-4 py-2 bg-vorenth-card border border-vorenth-border rounded-lg text-sm text-white" onchange="filterInsights()"> <option value="all">All Categories</option> <option value="geopolitical">Geopolitical</option> <option value="economic">Economic</option> <option value="technology">Technology</option> <option value="security">Security</option> </select> <button onclick="generateNewInsight()" class="px-4 py-2 bg-vorenth-accent hover:bg-vorenth-accentHover text-white rounded-lg text-sm font-medium transition-all flex items-center gap-2"> <i data-lucide="sparkles" class="w-4 h-4"></i> Generate New </button>
+        </div>
+       </div>
+       <div id="insights-list" class="grid md:grid-cols-2 gap-4"><!-- Will be populated dynamically -->
+       </div>
+      </div><!-- Narratives Page -->
+      <div id="page-narratives" class="page-section hidden space-y-6">
+       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+         <h2 class="text-xl font-bold text-white">Global Narratives</h2>
+         <p class="text-sm text-vorenth-muted">Emerging stories and developing trends</p>
+        </div>
+        <div class="flex items-center gap-3"><select id="narrative-region" class="px-4 py-2 bg-vorenth-card border border-vorenth-border rounded-lg text-sm text-white" onchange="filterNarratives()"> <option value="all">All Regions</option> <option value="north-america">North America</option> <option value="europe">Europe</option> <option value="asia-pacific">Asia-Pacific</option> <option value="middle-east">Middle East</option> <option value="africa">Africa</option> <option value="latin-america">Latin America</option> </select>
+        </div>
+       </div>
+       <div id="narratives-list" class="space-y-4"><!-- Will be populated dynamically -->
+       </div>
+      </div><!-- Markets Page -->
+      <div id="page-markets" class="page-section hidden space-y-6">
+       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+         <h2 class="text-xl font-bold text-white">Market Intelligence</h2>
+         <p class="text-sm text-vorenth-muted">Financial data and market analysis</p>
+        </div>
+        <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 bg-vorenth-success rounded-full pulse-dot"></span> <span class="text-vorenth-muted">Markets open</span>
+        </div>
+       </div><!-- Market Overview -->
+       <div class="grid md:grid-cols-4 gap-4">
+        <div class="glass-card rounded-xl p-5">
+         <div class="flex items-center justify-between mb-2"><span class="text-sm text-vorenth-muted">S&amp;P 500</span> <span class="text-xs text-vorenth-success">+0.47%</span>
+         </div>
+         <p class="text-xl font-bold text-white mono">5,234.18</p>
+        </div>
+        <div class="glass-card rounded-xl p-5">
+         <div class="flex items-center justify-between mb-2"><span class="text-sm text-vorenth-muted">NASDAQ</span> <span class="text-xs text-vorenth-success">+0.82%</span>
+         </div>
+         <p class="text-xl font-bold text-white mono">16,428.82</p>
+        </div>
+        <div class="glass-card rounded-xl p-5">
+         <div class="flex items-center justify-between mb-2"><span class="text-sm text-vorenth-muted">EUR/USD</span> <span class="text-xs text-vorenth-danger">-0.12%</span>
+         </div>
+         <p class="text-xl font-bold text-white mono">1.0842</p>
+        </div>
+        <div class="glass-card rounded-xl p-5">
+         <div class="flex items-center justify-between mb-2"><span class="text-sm text-vorenth-muted">Gold</span> <span class="text-xs text-vorenth-success">+0.34%</span>
+         </div>
+         <p class="text-xl font-bold text-white mono">2,341.50</p>
+        </div>
+       </div><!-- Market Analysis -->
+       <div class="glass-card rounded-2xl p-6">
+        <h3 class="text-lg font-semibold text-white mb-4">AI Market Analysis</h3>
+        <div id="market-analysis" class="prose prose-invert max-w-none text-vorenth-text text-sm leading-relaxed">
+         <p>Loading market analysis...</p>
+        </div>
+       </div><!-- Sector Performance -->
+       <div class="glass-card rounded-2xl p-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Sector Performance</h3>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+         <div class="flex items-center justify-between p-3 bg-vorenth-darker rounded-lg"><span class="text-sm text-vorenth-text">Technology</span> <span class="text-sm font-medium text-vorenth-success">+1.24%</span>
+         </div>
+         <div class="flex items-center justify-between p-3 bg-vorenth-darker rounded-lg"><span class="text-sm text-vorenth-text">Healthcare</span> <span class="text-sm font-medium text-vorenth-success">+0.87%</span>
+         </div>
+         <div class="flex items-center justify-between p-3 bg-vorenth-darker rounded-lg"><span class="text-sm text-vorenth-text">Financials</span> <span class="text-sm font-medium text-vorenth-danger">-0.32%</span>
+         </div>
+         <div class="flex items-center justify-between p-3 bg-vorenth-darker rounded-lg"><span class="text-sm text-vorenth-text">Energy</span> <span class="text-sm font-medium text-vorenth-success">+2.15%</span>
+         </div>
+         <div class="flex items-center justify-between p-3 bg-vorenth-darker rounded-lg"><span class="text-sm text-vorenth-text">Consumer</span> <span class="text-sm font-medium text-vorenth-danger">-0.18%</span>
+         </div>
+         <div class="flex items-center justify-between p-3 bg-vorenth-darker rounded-lg"><span class="text-sm text-vorenth-text">Industrials</span> <span class="text-sm font-medium text-vorenth-success">+0.54%</span>
+         </div>
+        </div>
+       </div>
+      </div><!-- Deep Search Page -->
+      <div id="page-search" class="page-section hidden space-y-6">
+       <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-8">
+         <h2 class="text-2xl font-bold text-white mb-2">Deep Search</h2>
+         <p class="text-vorenth-muted">Ask any question about global events, companies, or regions</p>
+        </div><!-- Search Input -->
+        <div class="glass-card rounded-2xl p-6 glow-accent">
+         <div class="relative"><textarea id="deep-search-input" placeholder="Enter your query... (e.g., 'What are the economic implications of recent EU energy policies?' or 'Analyze Tesla's market position in Asia')" class="w-full h-32 px-4 py-3 bg-vorenth-darker border border-vorenth-border rounded-xl text-white placeholder-vorenth-muted resize-none transition-all" onkeydown="handleSearchKeydown(event)"></textarea> <button onclick="executeDeepSearch()" id="search-btn" class="absolute bottom-4 right-4 px-4 py-2 bg-vorenth-accent hover:bg-vorenth-accentHover text-white rounded-lg text-sm font-medium transition-all flex items-center gap-2"> <i data-lucide="search" class="w-4 h-4"></i> Search </button>
+         </div><!-- Quick Searches -->
+         <div class="mt-4 flex flex-wrap gap-2"><span class="text-xs text-vorenth-muted">Try:</span> <button onclick="quickSearch('China-Taiwan relations')" class="px-3 py-1 bg-vorenth-card hover:bg-vorenth-border rounded-full text-xs text-vorenth-text transition-colors">China-Taiwan relations</button> <button onclick="quickSearch('AI regulation Europe')" class="px-3 py-1 bg-vorenth-card hover:bg-vorenth-border rounded-full text-xs text-vorenth-text transition-colors">AI regulation Europe</button> <button onclick="quickSearch('Oil market outlook')" class="px-3 py-1 bg-vorenth-card hover:bg-vorenth-border rounded-full text-xs text-vorenth-text transition-colors">Oil market outlook</button>
+         </div>
+        </div><!-- Search Results -->
+        <div id="search-results" class="mt-6 hidden">
+         <div class="glass-card rounded-2xl p-6">
+          <div class="flex items-center gap-3 mb-4">
+           <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center"><i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+           </div>
+           <div>
+            <h3 class="text-sm font-semibold text-white">AI Analysis</h3>
+            <p id="search-query-display" class="text-xs text-vorenth-muted"></p>
+           </div><button onclick="saveSearchResult()" class="ml-auto p-2 text-vorenth-muted hover:text-vorenth-accent transition-colors"> <i data-lucide="bookmark" class="w-5 h-5"></i> </button>
+          </div>
+          <div id="search-result-content" class="text-sm text-vorenth-text leading-relaxed space-y-4"><!-- Results will appear here -->
+          </div>
+         </div>
+        </div><!-- Loading State -->
+        <div id="search-loading" class="mt-6 hidden">
+         <div class="glass-card rounded-2xl p-6 text-center">
+          <div class="inline-flex items-center gap-2 text-vorenth-muted">
+           <div class="typing-indicator flex gap-1"><span class="w-2 h-2 bg-vorenth-accent rounded-full"></span> <span class="w-2 h-2 bg-vorenth-accent rounded-full"></span> <span class="w-2 h-2 bg-vorenth-accent rounded-full"></span>
+           </div><span class="text-sm">Analyzing data and generating insights...</span>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div><!-- Saved Page -->
+      <div id="page-saved" class="page-section hidden space-y-6">
+       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+         <h2 class="text-xl font-bold text-white">Saved Items</h2>
+         <p class="text-sm text-vorenth-muted">Your bookmarked insights and analyses</p>
+        </div>
+       </div>
+       <div id="saved-list" class="space-y-4">
+        <div class="glass-card rounded-xl p-8 text-center">
+         <div class="w-16 h-16 rounded-full bg-vorenth-card mx-auto mb-4 flex items-center justify-center"><i data-lucide="bookmark" class="w-8 h-8 text-vorenth-muted"></i>
+         </div>
+         <h3 class="text-lg font-semibold text-white mb-2">No saved items yet</h3>
+         <p class="text-sm text-vorenth-muted">Bookmark insights and search results to save them here</p>
+        </div>
+       </div>
+      </div><!-- Account Page -->
+      <div id="page-account" class="page-section hidden space-y-6">
+       <div class="max-w-2xl">
+        <h2 class="text-xl font-bold text-white mb-6">Account Settings</h2>
+        <div class="glass-card rounded-2xl p-6 space-y-6">
+         <div><label class="block text-sm font-medium text-vorenth-muted mb-2">Full Name</label> <input type="text" id="account-name" value="John Doe" class="w-full px-4 py-3 bg-vorenth-darker border border-vorenth-border rounded-lg text-white transition-all">
+         </div>
+         <div><label class="block text-sm font-medium text-vorenth-muted mb-2">Email</label> <input type="email" id="account-email" value="john@company.com" class="w-full px-4 py-3 bg-vorenth-darker border border-vorenth-border rounded-lg text-white transition-all">
+         </div>
+         <div><label class="block text-sm font-medium text-vorenth-muted mb-2">Company</label> <input type="text" id="account-company" placeholder="Your company name" class="w-full px-4 py-3 bg-vorenth-darker border border-vorenth-border rounded-lg text-white placeholder-vorenth-muted transition-all">
+         </div><button onclick="saveAccount()" class="px-6 py-3 bg-vorenth-accent hover:bg-vorenth-accentHover text-white rounded-lg font-medium transition-all"> Save Changes </button>
+        </div><!-- Danger Zone -->
+        <div class="glass-card rounded-2xl p-6 mt-6 border border-vorenth-danger/30">
+         <h3 class="text-lg font-semibold text-vorenth-danger mb-4">Danger Zone</h3>
+         <p class="text-sm text-vorenth-muted mb-4">Once you delete your account, there is no going back. Please be certain.</p><button class="px-4 py-2 border border-vorenth-danger text-vorenth-danger hover:bg-vorenth-danger hover:text-white rounded-lg text-sm font-medium transition-all"> Delete Account </button>
+        </div>
+       </div>
+      </div><!-- Billing Page -->
+      <div id="page-billing" class="page-section hidden space-y-6">
+       <div class="max-w-3xl">
+        <h2 class="text-xl font-bold text-white mb-6">Billing &amp; Subscription</h2><!-- Current Plan -->
+        <div class="glass-card rounded-2xl p-6 mb-6">
+         <div class="flex items-center justify-between mb-4">
+          <div>
+           <h3 class="text-lg font-semibold text-white">Current Plan</h3>
+           <p id="billing-plan" class="text-sm text-vorenth-muted">Starter Plan - $29/month</p>
+          </div><span class="px-3 py-1 bg-vorenth-success/20 text-vorenth-success rounded-full text-xs font-medium">Active</span>
+         </div>
+         <div class="flex items-center gap-4 text-sm text-vorenth-muted"><span>Next billing: March 15, 2025</span> <span>•</span> <span>Member since: Jan 2025</span>
+         </div>
+        </div><!-- Plan Comparison -->
+        <div class="grid md:grid-cols-3 gap-4">
+         <div class="glass-card rounded-xl p-6 border-2 border-vorenth-accent">
+          <div class="flex items-center justify-between mb-4">
+           <h4 class="font-semibold text-white">Starter</h4><span class="px-2 py-0.5 bg-vorenth-accent/20 text-vorenth-accent rounded text-xs">Current</span>
+          </div>
+          <p class="text-3xl font-bold text-white mb-1">$29<span class="text-sm text-vorenth-muted font-normal">/mo</span></p>
+          <ul class="mt-4 space-y-2 text-sm text-vorenth-muted">
+           <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-vorenth-success"></i>100 AI queries/month</li>
+           <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-vorenth-success"></i>Basic insights</li>
+           <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-vorenth-success"></i>Daily briefings</li>
+          </ul>
+         </div>
+         <div class="glass-card rounded-xl p-6 hover:border-vorenth-accent/50 border-2 border-transparent transition-all">
+          <h4 class="font-semibold text-white mb-4">Pro</h4>
+          <p class="text-3xl font-bold text-white mb-1">$99<span class="text-sm text-vorenth-muted font-normal">/mo</span></p>
+          <ul class="mt-4 space-y-2 text-sm text-vorenth-muted">
+           <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-vorenth-success"></i>Unlimited AI queries</li>
+           <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-vorenth-success"></i>Advanced insights</li>
+           <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-vorenth-success"></i>Real-time alerts</li>
+           <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-vorenth-success"></i>API access</li>
+          </ul><button class="w-full mt-4 px-4 py-2 bg-vorenth-accent hover:bg-vorenth-accentHover text-white rounded-lg text-sm font-medium transition-all"> Upgrade </button>
+         </div>
+         <div class="glass-card rounded-xl p-6 hover:border-vorenth-accent/50 border-2 border-transparent transition-all">
+          <h4 class="font-semibold text-white mb-4">Enterprise</h4>
+          <p class="text-3xl font-bold text-white mb-1">Custom</p>
+          <ul class="mt-4 space-y-2 text-sm text-vorenth-muted">
+           <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-vorenth-success"></i>Everything in Pro</li>
+           <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-vorenth-success"></i>Custom integrations</li>
+           <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-vorenth-success"></i>Dedicated support</li>
+           <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-vorenth-success"></i>SLA guarantee</li>
+          </ul><button class="w-full mt-4 px-4 py-2 border border-vorenth-border hover:border-vorenth-accent text-white rounded-lg text-sm font-medium transition-all"> Contact Sales </button>
+         </div>
+        </div><!-- Payment Method -->
+        <div class="glass-card rounded-2xl p-6 mt-6">
+         <h3 class="text-lg font-semibold text-white mb-4">Payment Method</h3>
+         <div class="flex items-center justify-between p-4 bg-vorenth-darker rounded-lg">
+          <div class="flex items-center gap-4">
+           <div class="w-12 h-8 bg-gradient-to-r from-blue-600 to-blue-400 rounded flex items-center justify-center text-white text-xs font-bold">
+            VISA
+           </div>
+           <div>
+            <p class="text-sm text-white">•••• •••• •••• 4242</p>
+            <p class="text-xs text-vorenth-muted">Expires 12/26</p>
+           </div>
+          </div><button class="text-sm text-vorenth-accent hover:underline">Update</button>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </main>
+   </div><!-- Toast Container -->
+   <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
+  </div>
+  <script>
+    // ==================== State Management ====================
+    let currentUser = null;
+    let selectedPlan = 'starter';
+    let currentPage = 'overview';
+    let savedItems = [];
+    let allInsights = [];
+    let currentSearchQuery = '';
+    let currentSearchResult = null;
+
+    // Default configuration
+    const defaultConfig = {
+      platform_name: 'Vorenth',
+      tagline: 'AI-Powered Global Intelligence Platform',
+      welcome_message: 'Welcome back to Vorenth',
+      background_color: '#0a0f1a',
+      surface_color: '#111827',
+      text_color: '#e5e7eb',
+      accent_color: '#06b6d4',
+      secondary_color: '#6b7280',
+      font_family: 'Space Grotesk',
+      font_size: 16
+    };
+
+    // ==================== Sample Data ====================
+    const sampleNarratives = [
+      {
+        id: 'n1',
+        title: 'US-China Tech Decoupling Accelerates',
+        category: 'geopolitical',
+        region: 'asia-pacific',
+        sentiment: 'negative',
+        relevance: 95,
+        summary: 'New semiconductor export restrictions signal deepening technological divide between major powers.',
+        timestamp: new Date().toISOString()
+      },
+      {
+        id: 'n2',
+        title: 'European Energy Transition Gains Momentum',
+        category: 'economic',
+        region: 'europe',
+        sentiment: 'positive',
+        relevance: 88,
+        summary: 'Major investments in renewable infrastructure reshape continental energy landscape.',
+        timestamp: new Date().toISOString()
+      },
+      {
+        id: 'n3',
+        title: 'AI Regulation Frameworks Emerge Globally',
+        category: 'technology',
+        region: 'north-america',
+        sentiment: 'neutral',
+        relevance: 92,
+        summary: 'Multiple jurisdictions advance comprehensive AI governance policies.',
+        timestamp: new Date().toISOString()
+      },
+      {
+        id: 'n4',
+        title: 'Middle East Diplomatic Realignment',
+        category: 'geopolitical',
+        region: 'middle-east',
+        sentiment: 'positive',
+        relevance: 85,
+        summary: 'Regional powers pursue normalization agreements amid shifting alliances.',
+        timestamp: new Date().toISOString()
+      },
+      {
+        id: 'n5',
+        title: 'Global Supply Chain Restructuring',
+        category: 'economic',
+        region: 'asia-pacific',
+        sentiment: 'neutral',
+        relevance: 90,
+        summary: 'Corporations diversify manufacturing bases in response to geopolitical risks.',
+        timestamp: new Date().toISOString()
+      }
+    ];
+
+    const sampleInsights = [
+      {
+        id: 'i1',
+        type: 'insight',
+        title: 'Semiconductor Industry Analysis',
+        content: 'The global semiconductor industry faces unprecedented restructuring as major economies pursue strategic autonomy. TSMC\'s Arizona expansion and Intel\'s European investments signal a fundamental shift in chip manufacturing geography.',
+        category: 'technology',
+        sentiment: 'neutral',
+        relevance: 94,
+        source: 'AI Analysis',
+        region: 'north-america',
+        timestamp: new Date().toISOString(),
+        saved: false
+      },
+      {
+        id: 'i2',
+        type: 'insight',
+        title: 'Currency Market Volatility Outlook',
+        content: 'Divergent central bank policies create opportunities and risks across currency pairs. The Fed\'s rate trajectory versus ECB and BOJ approaches will drive major FX movements through Q2.',
+        category: 'economic',
+        sentiment: 'neutral',
+        relevance: 87,
+        source: 'AI Analysis',
+        region: 'europe',
+        timestamp: new Date().toISOString(),
+        saved: false
+      },
+      {
+        id: 'i3',
+        type: 'insight',
+        title: 'Cybersecurity Threat Assessment',
+        content: 'State-sponsored cyber activities targeting critical infrastructure have increased 47% YoY. Financial services and energy sectors remain primary targets.',
+        category: 'security',
+        sentiment: 'negative',
+        relevance: 91,
+        source: 'AI Analysis',
+        region: 'north-america',
+        timestamp: new Date().toISOString(),
+        saved: false
+      },
+      {
+        id: 'i4',
+        type: 'insight',
+        title: 'Emerging Markets Capital Flows',
+        content: 'Strong dollar dynamics continue pressuring EM currencies and bonds. Selective opportunities exist in markets with solid fundamentals and improving current accounts.',
+        category: 'economic',
+        sentiment: 'neutral',
+        relevance: 83,
+        source: 'AI Analysis',
+        region: 'latin-america',
+        timestamp: new Date().toISOString(),
+        saved: false
+      }
+    ];
+
+    const aiBriefContent = `
+      <p><strong>Key Developments:</strong></p>
+      <p>Global markets show mixed signals as investors weigh inflation data against corporate earnings. Technology sector leads gains while energy faces headwinds from demand concerns.</p>
+      <p class="mt-3"><strong>Watch List:</strong></p>
+      <ul class="list-disc list-inside text-vorenth-muted space-y-1 mt-2">
+        <li>Fed policy meeting outcomes</li>
+        <li>China economic data release</li>
+        <li>European energy prices</li>
+        <li>AI sector developments</li>
+      </ul>
+      <p class="mt-3"><strong>Risk Assessment:</strong> <span class="text-vorenth-warning">Moderate</span></p>
+    `;
+
+    const marketAnalysisContent = `
+      <p><strong>Market Overview:</strong></p>
+      <p>US equities continue their upward trajectory supported by strong tech earnings and easing inflation concerns. The S&P 500 approaches all-time highs as breadth improves across sectors.</p>
+      <p class="mt-4"><strong>Key Themes:</strong></p>
+      <ul class="list-disc list-inside space-y-2 mt-2">
+        <li><strong>AI Investment Surge:</strong> Capital expenditure on AI infrastructure drives tech valuations higher. Major cloud providers report record data center demand.</li>
+        <li><strong>Rate Expectations:</strong> Markets price in potential rate cuts in H2, supporting risk assets and compressing credit spreads.</li>
+        <li><strong>Geopolitical Premium:</strong> Oil markets incorporate modest risk premium amid Middle East tensions, though ample supply caps upside.</li>
+      </ul>
+      <p class="mt-4"><strong>Outlook:</strong> Constructive near-term with attention on earnings sustainability and policy evolution.</p>
+    `;
+
+    // ==================== SDK Initialization ====================
+    async function initializeApp() {
+      // Initialize Element SDK
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange: async (config) => {
+            applyConfig(config);
+          },
+          mapToCapabilities: (config) => ({
+            recolorables: [
+              {
+                get: () => config.background_color || defaultConfig.background_color,
+                set: (value) => window.elementSdk.setConfig({ background_color: value })
+              },
+              {
+                get: () => config.surface_color || defaultConfig.surface_color,
+                set: (value) => window.elementSdk.setConfig({ surface_color: value })
+              },
+              {
+                get: () => config.text_color || defaultConfig.text_color,
+                set: (value) => window.elementSdk.setConfig({ text_color: value })
+              },
+              {
+                get: () => config.accent_color || defaultConfig.accent_color,
+                set: (value) => window.elementSdk.setConfig({ accent_color: value })
+              },
+              {
+                get: () => config.secondary_color || defaultConfig.secondary_color,
+                set: (value) => window.elementSdk.setConfig({ secondary_color: value })
+              }
+            ],
+            borderables: [],
+            fontEditable: {
+              get: () => config.font_family || defaultConfig.font_family,
+              set: (value) => window.elementSdk.setConfig({ font_family: value })
+            },
+            fontSizeable: {
+              get: () => config.font_size || defaultConfig.font_size,
+              set: (value) => window.elementSdk.setConfig({ font_size: value })
+            }
+          }),
+          mapToEditPanelValues: (config) => new Map([
+            ['platform_name', config.platform_name || defaultConfig.platform_name],
+            ['tagline', config.tagline || defaultConfig.tagline],
+            ['welcome_message', config.welcome_message || defaultConfig.welcome_message]
+          ])
+        });
+      }
+
+      // Initialize Data SDK
+      if (window.dataSdk) {
+        const result = await window.dataSdk.init({
+          onDataChanged: (data) => {
+            savedItems = data.filter(item => item.saved);
+            allInsights = data;
+            updateSavedCount();
+            renderSavedItems();
+          }
+        });
+
+        if (!result.isOk) {
+          console.error('Failed to initialize Data SDK');
+        }
+      }
+
+      // Initialize UI
+      lucide.createIcons();
+      renderDashboard();
+    }
+
+    function applyConfig(config) {
+      const cfg = { ...defaultConfig, ...config };
+
+      // Update platform name
+      const authLogo = document.getElementById('auth-logo-text');
+      const sidebarLogo = document.getElementById('sidebar-logo');
+      if (authLogo) authLogo.textContent = cfg.platform_name;
+      if (sidebarLogo) sidebarLogo.textContent = cfg.platform_name;
+
+      // Update tagline
+      const authTagline = document.getElementById('auth-tagline');
+      if (authTagline) authTagline.textContent = cfg.tagline;
+
+      // Update welcome message
+      const welcomeText = document.getElementById('welcome-text');
+      if (welcomeText) welcomeText.textContent = cfg.welcome_message;
+
+      // Apply colors
+      document.documentElement.style.setProperty('--bg-color', cfg.background_color);
+      document.documentElement.style.setProperty('--surface-color', cfg.surface_color);
+      document.documentElement.style.setProperty('--text-color', cfg.text_color);
+      document.documentElement.style.setProperty('--accent-color', cfg.accent_color);
+      document.documentElement.style.setProperty('--secondary-color', cfg.secondary_color);
+
+      // Apply font
+      document.body.style.fontFamily = `${cfg.font_family}, Space Grotesk, sans-serif`;
+
+      // Apply font size
+      document.documentElement.style.fontSize = `${cfg.font_size}px`;
+    }
+
+    // ==================== Authentication ====================
+    function showAuthTab(tab) {
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+      const loginTab = document.getElementById('login-tab');
+      const registerTab = document.getElementById('register-tab');
+
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+        loginTab.classList.add('bg-vorenth-accent', 'text-white');
+        loginTab.classList.remove('text-vorenth-muted');
+        registerTab.classList.remove('bg-vorenth-accent', 'text-white');
+        registerTab.classList.add('text-vorenth-muted');
+      } else {
+        loginForm.classList.add('hidden');
+        registerForm.classList.remove('hidden');
+        registerTab.classList.add('bg-vorenth-accent', 'text-white');
+        registerTab.classList.remove('text-vorenth-muted');
+        loginTab.classList.remove('bg-vorenth-accent', 'text-white');
+        loginTab.classList.add('text-vorenth-muted');
+      }
+
+      hideAuthMessage();
+    }
+
+    function selectPlan(plan) {
+      selectedPlan = plan;
+      const starterBtn = document.getElementById('plan-starter');
+      const proBtn = document.getElementById('plan-pro');
+
+      if (plan === 'starter') {
+        starterBtn.classList.add('border-vorenth-accent', 'bg-vorenth-accent/10');
+        starterBtn.classList.remove('border-vorenth-border');
+        proBtn.classList.remove('border-vorenth-accent', 'bg-vorenth-accent/10');
+        proBtn.classList.add('border-vorenth-border');
+      } else {
+        proBtn.classList.add('border-vorenth-accent', 'bg-vorenth-accent/10');
+        proBtn.classList.remove('border-vorenth-border');
+        starterBtn.classList.remove('border-vorenth-accent', 'bg-vorenth-accent/10');
+        starterBtn.classList.add('border-vorenth-border');
+      }
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      // Simulate login
+      if (email && password) {
+        currentUser = {
+          name: 'John Doe',
+          email: email,
+          plan: selectedPlan
+        };
+        showDashboard();
+        showToast('Welcome back!', 'success');
+      } else {
+        showAuthMessage('Please enter valid credentials', 'error');
+      }
+    }
+
+    function handleRegister(event) {
+      event.preventDefault();
+      const name = document.getElementById('register-name').value;
+      const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
+
+      // Simulate registration
+      if (name && email && password.length >= 8) {
+        currentUser = {
+          name: name,
+          email: email,
+          plan: selectedPlan
+        };
+        showDashboard();
+        showToast('Account created successfully!', 'success');
+      } else {
+        showAuthMessage('Please fill all fields correctly', 'error');
+      }
+    }
+
+    function handleLogout() {
+      currentUser = null;
+      document.getElementById('auth-screen').classList.remove('hidden');
+      document.getElementById('dashboard-screen').classList.add('hidden');
+      showToast('Logged out successfully', 'success');
+    }
+
+    function showAuthMessage(message, type) {
+      const msgEl = document.getElementById('auth-message');
+      msgEl.textContent = message;
+      msgEl.classList.remove('hidden', 'text-vorenth-success', 'text-vorenth-danger');
+      msgEl.classList.add(type === 'error' ? 'text-vorenth-danger' : 'text-vorenth-success');
+    }
+
+    function hideAuthMessage() {
+      document.getElementById('auth-message').classList.add('hidden');
+    }
+
+    // ==================== Dashboard ====================
+    function showDashboard() {
+      document.getElementById('auth-screen').classList.add('hidden');
+      document.getElementById('dashboard-screen').classList.remove('hidden');
+
+      // Update user info
+      if (currentUser) {
+        const initials = currentUser.name.split(' ').map(n => n[0]).join('');
+        document.getElementById('user-avatar').textContent = initials;
+        document.getElementById('user-name').textContent = currentUser.name;
+        document.getElementById('user-plan').textContent = `${currentUser.plan.charAt(0).toUpperCase() + currentUser.plan.slice(1)} Plan`;
+        document.getElementById('account-name').value = currentUser.name;
+        document.getElementById('account-email').value = currentUser.email;
+        document.getElementById('billing-plan').textContent = currentUser.plan === 'starter' ? 'Starter Plan - $29/month' : 'Pro Plan - $99/month';
+      }
+
+      lucide.createIcons();
+      renderDashboard();
+    }
+
+    function renderDashboard() {
+      renderTrendingNarratives();
+      renderAIBrief();
+      renderRecentInsights();
+      renderInsightsList();
+      renderNarrativesList();
+      renderMarketAnalysis();
+      updateSavedCount();
+    }
+
+    function renderTrendingNarratives() {
+      const container = document.getElementById('trending-narratives');
+      if (!container) return;
+
+      container.innerHTML = sampleNarratives.slice(0, 4).map((narrative, index) => `
+        <div class="insight-card flex items-start gap-4 p-4 bg-vorenth-darker rounded-xl border border-vorenth-border transition-all cursor-pointer slide-in" style="animation-delay: ${index * 0.1}s" onclick="viewNarrative('${narrative.id}')">
+          <div class="flex-shrink-0 w-10 h-10 rounded-lg ${getSentimentBg(narrative.sentiment)} flex items-center justify-center">
+            <i data-lucide="${getCategoryIcon(narrative.category)}" class="w-5 h-5 ${getSentimentColor(narrative.sentiment)}"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="px-2 py-0.5 bg-vorenth-card rounded text-xs text-vorenth-muted capitalize">${narrative.region.replace('-', ' ')}</span>
+              <span class="text-xs text-vorenth-muted">${narrative.relevance}% relevance</span>
+            </div>
+            <h4 class="text-sm font-medium text-white mb-1 truncate">${narrative.title}</h4>
+            <p class="text-xs text-vorenth-muted line-clamp-2">${narrative.summary}</p>
+          </div>
+          <button onclick="event.stopPropagation(); toggleSaveNarrative('${narrative.id}')" class="p-2 text-vorenth-muted hover:text-vorenth-accent transition-colors">
+            <i data-lucide="bookmark" class="w-4 h-4"></i>
+          </button>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function renderAIBrief() {
+      const container = document.getElementById('ai-brief');
+      if (container) {
+        container.innerHTML = aiBriefContent;
+      }
+    }
+
+    function renderRecentInsights() {
+      const container = document.getElementById('recent-insights');
+      if (!container) return;
+
+      container.innerHTML = sampleInsights.slice(0, 3).map((insight, index) => `
+        <div class="insight-card glass-card rounded-xl p-5 border border-vorenth-border transition-all cursor-pointer slide-in" style="animation-delay: ${index * 0.1}s" onclick="viewInsight('${insight.id}')">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="px-2 py-1 ${getCategoryBadgeBg(insight.category)} rounded text-xs font-medium capitalize">${insight.category}</span>
+            <span class="text-xs text-vorenth-muted">${insight.relevance}%</span>
+          </div>
+          <h4 class="text-sm font-semibold text-white mb-2">${insight.title}</h4>
+          <p class="text-xs text-vorenth-muted line-clamp-3">${insight.content}</p>
+          <div class="flex items-center justify-between mt-4 pt-3 border-t border-vorenth-border">
+            <span class="text-xs text-vorenth-muted">${insight.source}</span>
+            <button onclick="event.stopPropagation(); toggleSaveInsight('${insight.id}')" class="text-vorenth-muted hover:text-vorenth-accent transition-colors">
+              <i data-lucide="bookmark" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function renderInsightsList() {
+      const container = document.getElementById('insights-list');
+      if (!container) return;
+
+      container.innerHTML = sampleInsights.map((insight, index) => `
+        <div class="insight-card glass-card rounded-xl p-6 border border-vorenth-border transition-all slide-in" style="animation-delay: ${index * 0.05}s">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 ${getCategoryBadgeBg(insight.category)} rounded text-xs font-medium capitalize">${insight.category}</span>
+              <span class="px-2 py-1 ${getSentimentBadgeBg(insight.sentiment)} rounded text-xs font-medium capitalize">${insight.sentiment}</span>
+            </div>
+            <span class="text-xs text-vorenth-muted mono">${insight.relevance}% relevance</span>
+          </div>
+          <h3 class="text-lg font-semibold text-white mb-3">${insight.title}</h3>
+          <p class="text-sm text-vorenth-text leading-relaxed mb-4">${insight.content}</p>
+          <div class="flex items-center justify-between pt-4 border-t border-vorenth-border">
+            <div class="flex items-center gap-4 text-xs text-vorenth-muted">
+              <span>${insight.source}</span>
+              <span>•</span>
+              <span class="capitalize">${insight.region.replace('-', ' ')}</span>
+            </div>
+            <button onclick="toggleSaveInsight('${insight.id}')" class="flex items-center gap-2 text-sm text-vorenth-muted hover:text-vorenth-accent transition-colors">
+              <i data-lucide="bookmark" class="w-4 h-4"></i>
+              Save
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function renderNarrativesList() {
+      const container = document.getElementById('narratives-list');
+      if (!container) return;
+
+      container.innerHTML = sampleNarratives.map((narrative, index) => `
+        <div class="insight-card glass-card rounded-xl p-6 border border-vorenth-border transition-all slide-in" style="animation-delay: ${index * 0.05}s">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-12 h-12 rounded-xl ${getSentimentBg(narrative.sentiment)} flex items-center justify-center">
+              <i data-lucide="${getCategoryIcon(narrative.category)}" class="w-6 h-6 ${getSentimentColor(narrative.sentiment)}"></i>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="px-2 py-1 bg-vorenth-card rounded text-xs text-vorenth-muted capitalize">${narrative.region.replace('-', ' ')}</span>
+                <span class="px-2 py-1 ${getCategoryBadgeBg(narrative.category)} rounded text-xs font-medium capitalize">${narrative.category}</span>
+                <span class="ml-auto text-xs text-vorenth-muted mono">${narrative.relevance}%</span>
+              </div>
+              <h3 class="text-lg font-semibold text-white mb-2">${narrative.title}</h3>
+              <p class="text-sm text-vorenth-muted">${narrative.summary}</p>
+              <div class="flex items-center gap-4 mt-4">
+                <button onclick="viewNarrative('${narrative.id}')" class="text-sm text-vorenth-accent hover:underline">Read analysis →</button>
+                <button onclick="toggleSaveNarrative('${narrative.id}')" class="text-sm text-vorenth-muted hover:text-vorenth-accent transition-colors flex items-center gap-1">
+                  <i data-lucide="bookmark" class="w-4 h-4"></i>
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function renderMarketAnalysis() {
+      const container = document.getElementById('market-analysis');
+      if (container) {
+        container.innerHTML = marketAnalysisContent;
+      }
+    }
+
+    function renderSavedItems() {
+      const container = document.getElementById('saved-list');
+      if (!container) return;
+
+      if (savedItems.length === 0) {
+        container.innerHTML = `
+          <div class="glass-card rounded-xl p-8 text-center">
+            <div class="w-16 h-16 rounded-full bg-vorenth-card mx-auto mb-4 flex items-center justify-center">
+              <i data-lucide="bookmark" class="w-8 h-8 text-vorenth-muted"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2">No saved items yet</h3>
+            <p class="text-sm text-vorenth-muted">Bookmark insights and search results to save them here</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = savedItems.map((item, index) => `
+          <div class="insight-card glass-card rounded-xl p-5 border border-vorenth-border transition-all slide-in" style="animation-delay: ${index * 0.05}s">
+            <div class="flex items-start justify-between">
+              <div class="flex-1">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="px-2 py-1 ${getCategoryBadgeBg(item.category || 'general')} rounded text-xs font-medium capitalize">${item.category || 'Search Result'}</span>
+                </div>
+                <h4 class="text-sm font-semibold text-white mb-2">${item.title}</h4>
+                <p class="text-xs text-vorenth-muted line-clamp-3">${item.content}</p>
+              </div>
+              <button onclick="removeSavedItem('${item.__backendId}')" class="p-2 text-vorenth-muted hover:text-vorenth-danger transition-colors">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      lucide.createIcons();
+    }
+
+    function updateSavedCount() {
+      const statEl = document.getElementById('stat-saved');
+      if (statEl) {
+        statEl.textContent = savedItems.length;
+      }
+    }
+
+    // ==================== Navigation ====================
+    function navigateTo(page) {
+      currentPage = page;
+
+      // Update nav items
+      document.querySelectorAll('.nav-item').forEach(item => {
+        const navPage = item.dataset.nav;
+        if (navPage === page) {
+          item.classList.add('bg-vorenth-accent/10', 'text-vorenth-accent');
+          item.classList.remove('text-vorenth-muted');
+        } else {
+          item.classList.remove('bg-vorenth-accent/10', 'text-vorenth-accent');
+          item.classList.add('text-vorenth-muted');
+        }
+      });
+
+      // Show/hide page sections
+      document.querySelectorAll('.page-section').forEach(section => {
+        section.classList.add('hidden');
+      });
+      const targetPage = document.getElementById(`page-${page}`);
+      if (targetPage) {
+        targetPage.classList.remove('hidden');
+      }
+
+      // Update page title
+      const titles = {
+        overview: ['Overview', 'Real-time global intelligence'],
+        insights: ['AI Insights', 'Automated analysis of global events'],
+        narratives: ['Global Narratives', 'Emerging stories and trends'],
+        markets: ['Market Intelligence', 'Financial data and analysis'],
+        search: ['Deep Search', 'AI-powered research assistant'],
+        saved: ['Saved Items', 'Your bookmarked content'],
+        account: ['Account Settings', 'Manage your profile'],
+        billing: ['Billing', 'Subscription and payments']
+      };
+
+      const [title, subtitle] = titles[page] || ['Page', ''];
+      document.getElementById('page-title').textContent = title;
+      document.getElementById('page-subtitle').textContent = subtitle;
+
+      // Close mobile sidebar
+      if (window.innerWidth < 1024) {
+        closeSidebar();
+      }
+
+      lucide.createIcons();
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+
+      sidebar.classList.toggle('-translate-x-full');
+      overlay.classList.toggle('hidden');
+    }
+
+    function closeSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+    }
+
+    // ==================== Search ====================
+    function handleGlobalSearch(event) {
+      if (event.key === 'Enter') {
+        const query = event.target.value.trim();
+        if (query) {
+          navigateTo('search');
+          document.getElementById('deep-search-input').value = query;
+          executeDeepSearch();
+        }
+      }
+    }
+
+    function handleSearchKeydown(event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        executeDeepSearch();
+      }
+    }
+
+    function quickSearch(query) {
+      document.getElementById('deep-search-input').value = query;
+      executeDeepSearch();
+    }
+
+    async function executeDeepSearch() {
+      const input = document.getElementById('deep-search-input');
+      const query = input.value.trim();
+
+      if (!query) return;
+
+      currentSearchQuery = query;
+
+      // Show loading
+      document.getElementById('search-loading').classList.remove('hidden');
+      document.getElementById('search-results').classList.add('hidden');
+
+      // Simulate AI analysis
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Generate result
+      const result = generateSearchResult(query);
+      currentSearchResult = result;
+
+      // Display result
+      document.getElementById('search-loading').classList.add('hidden');
+      document.getElementById('search-results').classList.remove('hidden');
+      document.getElementById('search-query-display').textContent = `Query: "${query}"`;
+      document.getElementById('search-result-content').innerHTML = result;
+
+      lucide.createIcons();
+    }
+
+    function generateSearchResult(query) {
+      const templates = {
+        'china': `
+          <p><strong>Analysis: ${query}</strong></p>
+          <p class="mt-3">Current geopolitical dynamics involving China show significant developments across multiple domains:</p>
+          <ul class="list-disc list-inside mt-3 space-y-2 text-vorenth-muted">
+            <li><strong>Economic Policy:</strong> Recent monetary easing measures signal concerns about domestic growth trajectory</li>
+            <li><strong>Trade Relations:</strong> Ongoing tensions with Western economies continue to reshape supply chains</li>
+            <li><strong>Regional Influence:</strong> Diplomatic initiatives in Southeast Asia and Pacific nations intensify</li>
+          </ul>
+          <p class="mt-4"><strong>Risk Assessment:</strong> <span class="text-vorenth-warning">Elevated</span></p>
+          <p class="mt-2 text-vorenth-muted text-xs">Based on analysis of 1,247 sources • Updated ${new Date().toLocaleString()}</p>
+        `,
+        'ai': `
+          <p><strong>Analysis: ${query}</strong></p>
+          <p class="mt-3">The global AI regulatory landscape is evolving rapidly:</p>
+          <ul class="list-disc list-inside mt-3 space-y-2 text-vorenth-muted">
+            <li><strong>EU AI Act:</strong> Comprehensive framework sets global precedent for risk-based regulation</li>
+            <li><strong>US Approach:</strong> Executive orders and sector-specific guidance shape policy direction</li>
+            <li><strong>Industry Response:</strong> Major tech companies establish self-regulatory frameworks</li>
+          </ul>
+          <p class="mt-4"><strong>Market Impact:</strong> <span class="text-vorenth-success">Positive for compliance-ready firms</span></p>
+          <p class="mt-2 text-vorenth-muted text-xs">Based on analysis of 892 sources • Updated ${new Date().toLocaleString()}</p>
+        `,
+        'default': `
+          <p><strong>Analysis: ${query}</strong></p>
+          <p class="mt-3">Comprehensive intelligence assessment based on aggregated data sources:</p>
+          <ul class="list-disc list-inside mt-3 space-y-2 text-vorenth-muted">
+            <li><strong>Current Status:</strong> Active monitoring indicates moderate activity levels</li>
+            <li><strong>Key Developments:</strong> Recent events suggest evolving dynamics in this space</li>
+            <li><strong>Outlook:</strong> Near-term trajectory depends on multiple interconnected factors</li>
+          </ul>
+          <p class="mt-4"><strong>Confidence Level:</strong> <span class="text-vorenth-accent">High (87%)</span></p>
+          <p class="mt-2 text-vorenth-muted text-xs">Based on analysis of ${Math.floor(Math.random() * 500) + 500} sources • Updated ${new Date().toLocaleString()}</p>
+        `
+      };
+
+      const queryLower = query.toLowerCase();
+      if (queryLower.includes('china') || queryLower.includes('taiwan')) {
+        return templates.china;
+      } else if (queryLower.includes('ai') || queryLower.includes('artificial intelligence') || queryLower.includes('regulation')) {
+        return templates.ai;
+      }
+      return templates.default;
+    }
+
+    async function saveSearchResult() {
+      if (!currentSearchResult || !currentSearchQuery) return;
+
+      if (savedItems.length >= 999) {
+        showToast('Maximum saved items limit reached', 'error');
+        return;
+      }
+
+      const item = {
+        id: `search-${Date.now()}`,
+        type: 'search',
+        title: currentSearchQuery,
+        content: currentSearchResult.replace(/<[^>]*>/g, ' ').substring(0, 300),
+        category: 'search',
+        sentiment: 'neutral',
+        relevance: 85,
+        source: 'Deep Search',
+        region: 'global',
+        timestamp: new Date().toISOString(),
+        saved: true
+      };
+
+      if (window.dataSdk) {
+        const result = await window.dataSdk.create(item);
+        if (result.isOk) {
+          showToast('Search result saved!', 'success');
+        } else {
+          showToast('Failed to save result', 'error');
+        }
+      }
+    }
+
+    // ==================== Insight & Narrative Actions ====================
+    async function toggleSaveInsight(id) {
+      const insight = sampleInsights.find(i => i.id === id);
+      if (!insight) return;
+
+      const existingSaved = savedItems.find(s => s.id === id);
+
+      if (existingSaved) {
+        await removeSavedItem(existingSaved.__backendId);
+      } else {
+        if (savedItems.length >= 999) {
+          showToast('Maximum saved items limit reached', 'error');
+          return;
+        }
+
+        if (window.dataSdk) {
+          const result = await window.dataSdk.create({ ...insight, saved: true });
+          if (result.isOk) {
+            showToast('Insight saved!', 'success');
+          }
+        }
+      }
+    }
+
+    async function toggleSaveNarrative(id) {
+      const narrative = sampleNarratives.find(n => n.id === id);
+      if (!narrative) return;
+
+      const existingSaved = savedItems.find(s => s.id === id);
+
+      if (existingSaved) {
+        await removeSavedItem(existingSaved.__backendId);
+      } else {
+        if (savedItems.length >= 999) {
+          showToast('Maximum saved items limit reached', 'error');
+          return;
+        }
+
+        if (window.dataSdk) {
+          const item = {
+            ...narrative,
+            type: 'narrative',
+            content: narrative.summary,
+            saved: true
+          };
+          const result = await window.dataSdk.create(item);
+          if (result.isOk) {
+            showToast('Narrative saved!', 'success');
+          }
+        }
+      }
+    }
+
+    async function removeSavedItem(backendId) {
+      const item = savedItems.find(s => s.__backendId === backendId);
+      if (!item || !window.dataSdk) return;
+
+      const result = await window.dataSdk.delete(item);
+      if (result.isOk) {
+        showToast('Item removed', 'success');
+      }
+    }
+
+    function viewInsight(id) {
+      showToast('Opening insight details...', 'success');
+    }
+
+    function viewNarrative(id) {
+      showToast('Opening narrative analysis...', 'success');
+    }
+
+    function filterInsights() {
+      const filter = document.getElementById('insight-filter').value;
+      showToast(`Filtering by: ${filter}`, 'success');
+    }
+
+    function filterNarratives() {
+      const region = document.getElementById('narrative-region').value;
+      showToast(`Showing: ${region === 'all' ? 'All regions' : region}`, 'success');
+    }
+
+    function generateNewInsight() {
+      showToast('Generating new AI insight...', 'success');
+    }
+
+    function refreshData() {
+      const btn = document.getElementById('refresh-btn');
+      btn.classList.add('animate-spin');
+
+      setTimeout(() => {
+        btn.classList.remove('animate-spin');
+        showToast('Data refreshed', 'success');
+        renderDashboard();
+      }, 1000);
+    }
+
+    function saveAccount() {
+      showToast('Account settings saved!', 'success');
+    }
+
+    // ==================== Utility Functions ====================
+    function getCategoryIcon(category) {
+      const icons = {
+        geopolitical: 'globe',
+        economic: 'trending-up',
+        technology: 'cpu',
+        security: 'shield'
+      };
+      return icons[category] || 'file-text';
+    }
+
+    function getCategoryBadgeBg(category) {
+      const colors = {
+        geopolitical: 'bg-blue-500/20 text-blue-400',
+        economic: 'bg-green-500/20 text-green-400',
+        technology: 'bg-purple-500/20 text-purple-400',
+        security: 'bg-red-500/20 text-red-400'
+      };
+      return colors[category] || 'bg-gray-500/20 text-gray-400';
+    }
+
+    function getSentimentBg(sentiment) {
+      const colors = {
+        positive: 'bg-green-500/20',
+        negative: 'bg-red-500/20',
+        neutral: 'bg-blue-500/20'
+      };
+      return colors[sentiment] || 'bg-gray-500/20';
+    }
+
+    function getSentimentColor(sentiment) {
+      const colors = {
+        positive: 'text-green-400',
+        negative: 'text-red-400',
+        neutral: 'text-blue-400'
+      };
+      return colors[sentiment] || 'text-gray-400';
+    }
+
+    function getSentimentBadgeBg(sentiment) {
+      const colors = {
+        positive: 'bg-green-500/20 text-green-400',
+        negative: 'bg-red-500/20 text-red-400',
+        neutral: 'bg-blue-500/20 text-blue-400'
+      };
+      return colors[sentiment] || 'bg-gray-500/20 text-gray-400';
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+
+      const bgColor = type === 'success' ? 'bg-vorenth-success' : type === 'error' ? 'bg-vorenth-danger' : 'bg-vorenth-accent';
+
+      toast.className = `${bgColor} text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 slide-in`;
+      toast.innerHTML = `
+        <i data-lucide="${type === 'success' ? 'check-circle' : type === 'error' ? 'alert-circle' : 'info'}" class="w-4 h-4"></i>
+        <span class="text-sm">${message}</span>
+      `;
+
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100%)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // ==================== Initialize ====================
+    initializeApp();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9db1682f3075f7f3',t:'MTc3MzMwMzkxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
