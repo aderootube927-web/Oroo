@@ -1,2 +1,0 @@
-# Oroo
-Online business platform 
